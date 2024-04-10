@@ -30,17 +30,16 @@ function pickRandomItems(array, numberOfItems = 1) {
     const selectedIndices = new Set();
 
      // Ensure numberOfItems does not exceed array length
-    if (numberOfItems > array.length) {
+    if (numberOfItems >= array.length) {
         numberOfItems = array.length;
     }
     // Generate random items until the desired number is reached
-    for (let i = 0; i < maxNumberOfItems; i++) {
-        const index = numberOfItems[i];
-        if (index < 0 || index >= array.length || selectedIndices.has(index)) {
-            throw new Error('Invalid index in number of items array.');
+    for (let i = 0; i < numberOfItems; i++) {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        if (!selectedIndices.has(randomIndex)) {
+            selectedIndices.add(randomIndex);
+            randomItems.push(array[randomIndex]);
         }
-        selectedIndices.add(index);
-        randomItems.push(array[index]);
     }
 
     return randomItems;
