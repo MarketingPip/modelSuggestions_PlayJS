@@ -50,7 +50,7 @@ function splitData(originalArray) {
   async function loadModal(url){
     
     try{
-     const fetchModal =  fetchJSON(url)
+     const fetchModal =  await fetchJSON(url)
      return splitData(fetchModal)
     }catch(err){
       throw err
