@@ -1,15 +1,10 @@
 export function ModelSuggestions(){
 
 function splitData(originalArray) {
-  const resultArrays = [];
+  const resultArrays = []; // Start with an initial empty array
 
   // Iterate through each string in the original array
   originalArray.forEach((str, index) => {
-    if (index % 4 === 0) {
-      // Start a new group for every 4 items
-      resultArrays.push([]);
-    }
-
     // Split the string by the first occurrence of "---"
     const match = str.match(/^(.*?)---(.*)$/);
 
@@ -19,15 +14,30 @@ function splitData(originalArray) {
       const description = match[2].trim();
 
       // Push an object with title and description to the last array in resultArrays
-      resultArrays[resultArrays.length - 1].push({ title, description });
-    } else {
-      // If no match is found, push the entire string as description
-      resultArrays[resultArrays.length - 1].push({ title: '', description: str.trim() });
-    }
+      resultArrays.push({ title, description });
+    } 
   });
 
   return resultArrays;
 }
+
+function pickRandomItems(array, numberOfItems = 1) {
+    const randomItems = [];
+    const selectedIndices = new Set();
+
+    // Generate random items until the desired number is reached
+    for (let i = 0; randomItems.length < numberOfItems; i++) {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        if (!selectedIndices.has(randomIndex)) {
+            selectedIndices.add(randomIndex);
+            randomItems.push(array[randomIndex]);
+        }
+    }
+
+    return randomItems;
+}
+
+  
  
   async function fetchJSON(url) {
     try {
@@ -61,7 +71,8 @@ function splitData(originalArray) {
   
   
   return{
-    loadModal
+    loadModal,
+    pickSuggestions:pickRandomItems
   }
   
   
