@@ -31,27 +31,20 @@ function pickRandomItems(array, numberOfItems = 1) {
     }
 
         // If numberOfItems exceeds array length, set it to array length
-    if (numberOfItems > array.length) {
+    if (numberOfItems >= array.length) {
         numberOfItems = array.length;
     }
 
-    const randomItems = [];
-    const selectedIndices = new Set();
 
-    // Generate random items until the desired number is reached
-    for (let i = 0; i < array.length; i++) {
-        const randomIndex = Math.floor(Math.random() * array.length);
-        if (!selectedIndices.has(randomIndex)) {
-            selectedIndices.add(randomIndex);
-            randomItems.push(array[randomIndex]);
-        }
-
-        if (randomItems.length === numberOfItems) {
-            break;
-        }
+    
+    // Fisher-Yates shuffle algorithm
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-
-    return randomItems;
+    
+    // Return the first numberOfItems elements
+    return array.slice(0, numberOfItems);
 }
 
 
