@@ -23,27 +23,37 @@ function splitData(originalArray) {
 
 function pickRandomItems(array, numberOfItems = 1) {
     if (!Array.isArray(array) || array.length === 0) {
-        throw new Error('Number of items must be a non-empty array.');
+        throw new Error('Input must be a non-empty array.');
+    }
+
+    if (numberOfItems <= 0) {
+        return [];
+    }
+
+        // If numberOfItems exceeds array length, set it to array length
+    if (numberOfItems > array.length) {
+        numberOfItems = array.length;
     }
 
     const randomItems = [];
     const selectedIndices = new Set();
 
-     // Ensure numberOfItems does not exceed array length
-    if (numberOfItems >= array.length) {
-        numberOfItems = array.length;
-    }
     // Generate random items until the desired number is reached
-    for (let i = 0; i < numberOfItems; i++) {
+    for (let i = 0; i < array.length; i++) {
         const randomIndex = Math.floor(Math.random() * array.length);
         if (!selectedIndices.has(randomIndex)) {
             selectedIndices.add(randomIndex);
             randomItems.push(array[randomIndex]);
         }
+
+        if (randomItems.length === numberOfItems) {
+            break;
+        }
     }
 
     return randomItems;
 }
+
 
   
  
