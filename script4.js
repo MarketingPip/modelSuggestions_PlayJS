@@ -22,16 +22,25 @@ function splitData(originalArray) {
 }
 
 function pickRandomItems(array, numberOfItems = 1) {
+    if (!Array.isArray(array) || array.length === 0) {
+        throw new Error('Number of items must be a non-empty array.');
+    }
+
     const randomItems = [];
     const selectedIndices = new Set();
 
+     // Ensure numberOfItems does not exceed array length
+    if (numberOfItems > array.length) {
+        numberOfItems = array.length;
+    }
     // Generate random items until the desired number is reached
-    for (let i = 0; randomItems.length < numberOfItems; i++) {
-        const randomIndex = Math.floor(Math.random() * array.length);
-        if (!selectedIndices.has(randomIndex)) {
-            selectedIndices.add(randomIndex);
-            randomItems.push(array[randomIndex]);
+    for (let i = 0; i < maxNumberOfItems; i++) {
+        const index = numberOfItems[i];
+        if (index < 0 || index >= array.length || selectedIndices.has(index)) {
+            throw new Error('Invalid index in number of items array.');
         }
+        selectedIndices.add(index);
+        randomItems.push(array[index]);
     }
 
     return randomItems;
