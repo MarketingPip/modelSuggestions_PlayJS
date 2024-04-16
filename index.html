@@ -1,0 +1,123 @@
+<h1>Just a test</h1>
+
+<body>
+  <button id="btn">Click me</button>
+  <img crossorgin="annymous" src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">
+  
+  <script>
+    async function Print(code, removeGutter = false) {
+
+    // Function to check if the given URL is an image URL
+    function isImgUrl(url) {
+        return /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(url);
+    }
+
+    // Function to get stylesheet rules as string
+    function getStylesheetRulesAsString(sheetID) {
+        const linkElement = document.querySelector(sheetID);
+        if (!linkElement) {
+            console.error('Stylesheet not found');
+            return null;
+        }
+
+        const styleSheet = linkElement.sheet;
+        if (!styleSheet) {
+            console.error('StyleSheet object not found');
+            return null;
+        }
+
+        let cssText = '';
+        for (let i = 0; i < styleSheet.cssRules.length; i++) {
+            cssText += styleSheet.cssRules[i].cssText + '\n';
+        }
+
+        return cssText;
+    }
+
+    let css = '';
+
+    css += getStylesheetRulesAsString(`link[id="highlight"]`);
+
+    // Retrieve highlight and additional CSS if required
+    css += getStylesheetRulesAsString(`style[id="markdownCSS"]`);
+    css += getStylesheetRulesAsString(`style[id="katex"]`);
+
+    try {
+        const IMGUrl = isImgUrl(code)
+        
+        // Create an iframe
+        var printIframe = document.createElement('iframe');
+        printIframe.name = "printIframe";
+        printIframe.style.width = '800px';
+        printIframe.style.height = '400px';
+        printIframe.style.display = 'none'; // Hide the iframe
+        document.body.appendChild(printIframe);
+
+        // Get the document of the iframe
+        var printDocument = printIframe.contentDocument || printIframe.contentWindow.document || printIframe.contentDocument.document || printIframe.contentWindow
+
+        const head = printDocument.querySelector('head');
+        const body = printDocument.querySelector('body');
+
+        // Append title to head
+        const title = document.createElement('title');
+        title.textContent = document.title;
+        head.appendChild(title);
+
+        // Append CSS to head
+        const style = document.createElement('style');
+        style.textContent = `${css}
+            body { margin: 0; }
+            img { max-width: 100%; height: auto; }`;
+        head.appendChild(style);
+
+        // Append code to body
+        const codeContainer = document.createElement('div');
+        codeContainer.innerHTML = code;
+        body.appendChild(codeContainer);
+
+        // Wait for iframe to load all content
+        printIframe.onload = () => {
+            // Handle image loading
+            const imageElements = printDocument.querySelectorAll('img');
+            let imagePromises = [];
+            imageElements.forEach(img => {
+                const imgLoaded = new Image();
+                imgLoaded.src = img.src;
+                imgLoaded.crossorigin = "anonymous";
+                const promise = new Promise((resolve, reject) => {
+                    imgLoaded.onload = () => resolve();
+                    imgLoaded.onerror = () => {
+                        img.src = '';
+                        resolve();
+                    };
+                });
+                imagePromises.push(promise);
+            });
+
+            // When all images are loaded, proceed with printing
+            Promise.all(imagePromises).then(() => {
+                if (removeGutter) {
+                    code = code.replaceAll(`<span class="ace_gutter ace_gutter-cell"></span>`, "").replaceAll("ace_show_gutter", "");
+                }
+            }).catch(error => {
+                // Print anyway (maybe bad image?)
+                printIframe.contentWindow.print();
+                console.error("Error loading images:", error);
+            });
+        };
+
+        // Trigger iframe load
+        window.frames["printIframe"].focus();
+        window.frames["printIframe"].print();
+        //printIframe.contentWindow.print();
+        document.body.removeChild(printIframe);
+
+    } catch (error) {
+        console.error("Error printing:", error);
+    }
+}
+Print(`<img src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">`)
+  </script>
+  
+</body>
