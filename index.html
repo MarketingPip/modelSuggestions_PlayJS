@@ -5,7 +5,7 @@
   <img crossorgin="annymous" src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">
   
   <script type="module">
-    async function Print(code, removeGutter = false) {
+async function Print(code, removeGutter = false) {
 
     // Function to check if the given URL is an image URL
     function isImgUrl(url) {
@@ -100,23 +100,24 @@
                 if (removeGutter) {
                     code = code.replaceAll(`<span class="ace_gutter ace_gutter-cell"></span>`, "").replaceAll("ace_show_gutter", "");
                 }
+              printIframe.contentWindow.print();
+              document.body.removeChild(printIframe);
             }).catch(error => {
                 // Print anyway (maybe bad image?)
                 printIframe.contentWindow.print();
                 console.error("Error loading images:", error);
+               document.body.removeChild(printIframe);
             });
         };
 
-        // Trigger iframe load
-        window.frames["printIframe"].focus();
-        window.frames["printIframe"].print();
-        //printIframe.contentWindow.print();
-        document.body.removeChild(printIframe);
+       
+        printDocument.close();
 
     } catch (error) {
         console.error("Error printing:", error);
     }
 }
+
 let btn = document.getElementById("btn");
 btn.addEventListener("click", async (event) => {
    await Print(`<img src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">`)
