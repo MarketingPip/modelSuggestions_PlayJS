@@ -105,6 +105,11 @@
                     code = code.replaceAll(`<span class="ace_gutter ace_gutter-cell"></span>`, "").replaceAll("ace_show_gutter", "");
                 }
                 printIframe.contentWindow.print();
+
+                setTimeout(function(){
+          printIframe.contentWindow.print()
+        },1000)
+              
                 document.body.removeChild(printIframe);
             }).catch(error => {
               /// print aways (maybe bad image?) //
