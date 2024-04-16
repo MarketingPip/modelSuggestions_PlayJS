@@ -120,19 +120,19 @@
             });
         };
 
-      function proceedToPrint(){
-       try{
-         printIframe.contentWindow.document.execCommand('print', false, null)
-        }catch(err){
-             setTimeout(function(){
-          printIframe.contentWindow.print()
-        },1000)
+ function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-         
-       }
+async function proceedToPrint() {
+  try {
+    printIframe.contentWindow.document.execCommand('print', false, null);
+  } catch (err) {
+    await wait(1000); // Wait for 1000 milliseconds
+    printIframe.contentWindow.print();
+  }
+}
 
-        
-      }
       
         // Trigger iframe load
         printDocument.write("</body></html>");
