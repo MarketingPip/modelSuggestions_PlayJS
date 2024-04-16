@@ -5,7 +5,7 @@
   <img crossorgin="annymous" src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">
   
   <script type="module">
-      async function Print(code, removeGutter = false) {
+  async function Print(code, removeGutter = false) {
   
   
     // Function to check if the given URL is an image URL
@@ -85,7 +85,6 @@
             imageElements.forEach(img => {
               const imgLoaded = new Image();
                     imgLoaded.src = img.src;
-                    imgLoaded.crossorigin = "anonymous";
                     const promise = new Promise((resolve, reject) => {
                         imgLoaded.onload = () => resolve();
                         imgLoaded.onerror = () => {
@@ -104,36 +103,15 @@
                 if (removeGutter) {
                     code = code.replaceAll(`<span class="ace_gutter ace_gutter-cell"></span>`, "").replaceAll("ace_show_gutter", "");
                 }
-              //  printIframe.contentWindow.print();
-
-
-               proceedToPrint()
-              
-              
-              //  document.body.removeChild(printIframe);
+                printIframe.contentWindow.print();
+                document.body.removeChild(printIframe);
             }).catch(error => {
               /// print aways (maybe bad image?) //
-
-               proceedToPrint()
-               // printIframe.contentWindow.print();
+                printIframe.contentWindow.print();
                 console.error("Error loading images:", error);
             });
         };
 
- function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function proceedToPrint() {
-  try {
-    printIframe.contentWindow.document.execCommand('print', false, null);
-  } catch (err) {
-    await wait(1000); // Wait for 1000 milliseconds
-    printIframe.contentWindow.print();
-  }
-}
-
-      
         // Trigger iframe load
         printDocument.write("</body></html>");
         printDocument.close();
