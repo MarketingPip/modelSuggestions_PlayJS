@@ -106,6 +106,8 @@
                 }
                 printIframe.contentWindow.print();
 
+printIframe.contentWindow.document.execCommand('print', false, null)
+              
                 setTimeout(function(){
           printIframe.contentWindow.print()
         },1000)
