@@ -4,7 +4,7 @@
   <button id="btn">Click me</button>
   <img crossorgin="annymous" src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">
   
-  <script>
+  <script type="module">
     async function Print(code, removeGutter = false) {
 
     // Function to check if the given URL is an image URL
@@ -117,7 +117,7 @@
         console.error("Error printing:", error);
     }
 }
-Print(`<img src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">`)
+await Print(`<img src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">`)
   </script>
   
 </body>
