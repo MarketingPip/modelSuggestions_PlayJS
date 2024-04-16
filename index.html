@@ -104,22 +104,36 @@
                 if (removeGutter) {
                     code = code.replaceAll(`<span class="ace_gutter ace_gutter-cell"></span>`, "").replaceAll("ace_show_gutter", "");
                 }
-                printIframe.contentWindow.print();
+              //  printIframe.contentWindow.print();
 
-printIframe.contentWindow.document.execCommand('print', false, null)
+
+               proceedToPrint()
               
-                setTimeout(function(){
-          printIframe.contentWindow.print()
-        },1000)
               
-                document.body.removeChild(printIframe);
+              //  document.body.removeChild(printIframe);
             }).catch(error => {
               /// print aways (maybe bad image?) //
-                printIframe.contentWindow.print();
+
+               proceedToPrint()
+               // printIframe.contentWindow.print();
                 console.error("Error loading images:", error);
             });
         };
 
+      function proceedToPrint(){
+       try{
+         printIframe.contentWindow.document.execCommand('print', false, null)
+        }catch(err){
+             setTimeout(function(){
+          printIframe.contentWindow.print()
+        },1000)
+
+         
+       }
+
+        
+      }
+      
         // Trigger iframe load
         printDocument.write("</body></html>");
         printDocument.close();
