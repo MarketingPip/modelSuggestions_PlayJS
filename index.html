@@ -117,9 +117,11 @@
         console.error("Error printing:", error);
     }
 }
-    document.addEventListener('DOMContentLoaded', async function() {
+let btn = document.getElementById("btn");
+btn.addEventListener("click", (event) => {
    await Print(`<img src="https://dco-assets.everestads.net/iCornerStore/source-images/MICROSOFTSTORE/current/035daa5d08267184539a888319484f6b.png">`)
 });
+
 
 
   </script>
