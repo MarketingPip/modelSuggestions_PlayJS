@@ -48,7 +48,9 @@ function pickRandomItems(array, numberOfItems = 1) {
 }
 
 
-  
+  function mergeArrays(...arrays) {
+  return [].concat(...arrays);
+}
  
   async function fetchJSON(url) {
     try {
@@ -74,6 +76,7 @@ function pickRandomItems(array, numberOfItems = 1) {
   
   return{
     loadModal,
+    mergeArrays,
     pickSuggestions:pickRandomItems
   }
   
