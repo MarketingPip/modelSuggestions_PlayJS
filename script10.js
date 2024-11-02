@@ -4,16 +4,16 @@ function splitData(originalArray) {
   const resultArrays = []; // Start with an initial empty array
 
   // Iterate through each string in the original array
-  originalArray.forEach((str, index) => {
-    // Split the string by the first occurrence of "---"
-    const match = str.match(/^(.*?)---(.*)$/);
+  originalArray.forEach((str) => {
+    // Find the index of the first occurrence of "---"
+    const delimiterIndex = str.indexOf("---");
 
-    if (match) {
-      // Extract title and description from the match groups
-      const title = match[1].trim();
-      const description = match[2].trim();
+    if (delimiterIndex !== -1) {
+      // Split the string into title and description using the delimiter index
+      const title = str.substring(0, delimiterIndex).trim();
+      const description = str.substring(delimiterIndex + 3).trim(); // +3 to skip past "---"
 
-      // Push an object with title and description to the last array in resultArrays
+      // Push an object with title and description to the resultArrays
       resultArrays.push({ title, description });
     } 
   });
@@ -61,24 +61,15 @@ function pickRandomItems(array, numberOfItems = 1) {
         const json = await response.json();
         return json;
     } catch (error) {
-        // Handle errors here
-        //console.error('Error fetching JSON:', error.message);
         throw error;
     }
 }
 
   
   async function loadModal(url){
-    
-    try{
      const fetchModal =  await fetchJSON(url)
-     return splitData(fetchModal)
-    }catch(err){
-      throw err
-    }
-    
+     return splitData(fetchModal)  
   }
-  
   
   
   return{
